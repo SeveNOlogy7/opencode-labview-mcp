@@ -7,7 +7,7 @@ import { LABVIEW_PERMISSIONS } from './install.js';
 import {
   bold,
   confirm,
-  fail,
+  fatal,
   log,
   ok,
   stopLabviewMcpProcesses,
@@ -16,7 +16,7 @@ import {
 } from './util.js';
 
 export async function uninstall(opts = {}) {
-  if (!isWindowsX64) fail('opencode-labview-mcp supports Windows x64 only.');
+  if (!isWindowsX64) fatal('opencode-labview-mcp supports Windows x64 only.');
   const scope = opts.scope || 'user';
   const installRoot = path.resolve(opts.installRoot || defaultInstallRoot());
   const config = resolveConfigPath(scope, opts.config);

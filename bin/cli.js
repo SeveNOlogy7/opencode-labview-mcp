@@ -6,7 +6,7 @@ import { install } from '../src/install.js';
 import { update } from '../src/update.js';
 import { doctor } from '../src/doctor.js';
 import { uninstall } from '../src/uninstall.js';
-import { bold, dim, fail, log, warn } from '../src/util.js';
+import { bold, dim, fatal, log, warn } from '../src/util.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const pkg = JSON.parse(fs.readFileSync(path.join(here, '..', 'package.json'), 'utf8'));
@@ -96,7 +96,7 @@ function parseArgs(argv) {
     if (VALUE_FLAGS.has(arg)) {
       const value = argv[i + 1];
       if (value === undefined || value.startsWith('-')) {
-        fail(`${arg} requires a value`);
+        fatal(`${arg} requires a value`);
       }
       i += 1;
       const key = arg.replace(/^--/, '').replace(/-([a-z])/g, (_, c) => c.toUpperCase());
@@ -111,7 +111,7 @@ function parseArgs(argv) {
       }
       continue;
     }
-    if (arg.startsWith('-')) fail(`unknown option: ${arg}`);
+    if (arg.startsWith('-')) fatal(`unknown option: ${arg}`);
     positional.push(arg);
   }
   return { command: positional[0], positional, opts };
@@ -151,7 +151,7 @@ async function main() {
     return;
   }
   if (opts.scope && opts.scope !== 'user' && opts.scope !== 'project') {
-    fail(`--scope must be "user" or "project", got "${opts.scope}"`);
+    fatal(`--scope must be "user" or "project", got "${opts.scope}"`);
   }
 
   const normalized = normalize(opts);
@@ -169,13 +169,13 @@ async function main() {
       await uninstall(normalized);
       break;
     default:
-      warn(`unknown command: ${command}`);
+      console.error(warn(`unknown command: ${command}`));
       log(HELP);
       process.exitCode = 1;
   }
 }
 
 main().catch((error) => {
-  fail(error && error.stack ? error.stack : String(error));
+  fatal(error && error.stack ? error.stack : String(error));
   process.exitCode = 1;
 });

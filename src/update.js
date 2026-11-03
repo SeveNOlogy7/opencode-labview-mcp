@@ -17,7 +17,7 @@ import { LABVIEW_PERMISSIONS, swapInstall, verifyExe } from './install.js';
 import {
   bold,
   ensureDir,
-  fail,
+  fatal,
   formatBytes,
   log,
   ok,
@@ -27,7 +27,7 @@ import {
 } from './util.js';
 
 export async function update(opts = {}) {
-  if (!isWindowsX64) fail('opencode-labview-mcp supports Windows x64 only.');
+  if (!isWindowsX64) fatal('opencode-labview-mcp supports Windows x64 only.');
   const scope = opts.scope || 'user';
   const installRoot = path.resolve(opts.installRoot || defaultInstallRoot());
   const exe = resolveExe(installRoot);

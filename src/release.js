@@ -53,7 +53,11 @@ async function fetchWithRetry(url, { attempts = 3, delayMs = 1500 } = {}) {
       }
     }
   }
-  throw new Error(`Download failed after ${attempts} attempts: ${last?.cause?.code || last?.message || last}`);
+  throw new Error(
+    `Download failed after ${attempts} attempts: ${last?.cause?.code || last?.message || last}\n` +
+      '  If github.com is unreachable, download labview-mcp.zip and labview-mcp.sha256 from the release page\n' +
+      '  and rerun with: opencode-labview-mcp install --zip <zip> --sha256 <sha256-file>',
+  );
 }
 
 export async function downloadTo(url, dest, label = 'download') {

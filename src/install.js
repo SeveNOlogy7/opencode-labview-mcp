@@ -17,7 +17,7 @@ import {
   bold,
   confirm,
   ensureDir,
-  fail,
+  fatal,
   formatBytes,
   log,
   ok,
@@ -85,7 +85,7 @@ export function verifyExe(exe, deep) {
 }
 
 export async function install(opts = {}) {
-  if (!isWindowsX64) fail('opencode-labview-mcp supports Windows x64 only.');
+  if (!isWindowsX64) fatal('opencode-labview-mcp supports Windows x64 only.');
   const scope = opts.scope || 'user';
   const installRoot = path.resolve(opts.installRoot || defaultInstallRoot());
   const exe = opts.exe ? path.resolve(opts.exe) : resolveExe(installRoot);
@@ -96,7 +96,7 @@ export async function install(opts = {}) {
   let binDir;
 
   if (opts.exe) {
-    if (!fs.existsSync(exe)) fail(`--exe not found: ${exe}`);
+    if (!fs.existsSync(exe)) fatal(`--exe not found: ${exe}`);
     binDir = path.dirname(exe);
     log(`  using existing binary: ${exe}`);
     log(`  version: ${installedVersion(path.dirname(binDir)) || installedVersion(installRoot) || 'unknown'}`);
@@ -107,7 +107,7 @@ export async function install(opts = {}) {
     log('  use --force (with --zip) to replace it');
   } else if (opts.zip) {
     const zip = path.resolve(opts.zip);
-    if (!fs.existsSync(zip)) fail(`--zip not found: ${zip}`);
+    if (!fs.existsSync(zip)) fatal(`--zip not found: ${zip}`);
     if (opts.dryRun) {
       log(`  would install ${zip} into ${installRoot}`);
       return;

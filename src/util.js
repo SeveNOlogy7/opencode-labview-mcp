@@ -112,3 +112,5 @@ export function failAndExit(message) {
   console.error(fail(`error: ${message}`));
   process.exit(1);
 }
+
+export const fatal = failAndExit;
