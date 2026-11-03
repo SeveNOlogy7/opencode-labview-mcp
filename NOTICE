@@ -1,0 +1,31 @@
+opencode-labview-mcp
+====================
+
+This package is an unofficial installer for the LabVIEW MCP server published by
+Zuehlke Engineering at https://github.com/Zuehlke/labview-mcp.
+
+It does not contain, modify or redistribute the LabVIEW MCP server binary. At
+install time it downloads an official GitHub release asset (labview-mcp.zip),
+verifies it against the release's own labview-mcp.sha256 file, and unpacks it
+into a local directory. All LabVIEW automation is performed by that upstream
+binary.
+
+The agent definitions under agents/ are derived from the Claude Code agent
+definitions shipped in the upstream repository and are redistributed here under
+the upstream project's license. They have been adapted for OpenCode: front
+matter fields were translated and the class-generator handoff was rewritten,
+because OpenCode subagents cannot launch further subagents.
+
+Upstream project: https://github.com/Zuehlke/labview-mcp
+Upstream license: see the LICENSE file in the release archive.
+
+Trademarks
+----------
+LabVIEW and National Instruments are trademarks of National Instruments
+Corporation (now part of Emerson Electric Co.). Zuehlke is a trademark of
+Zuehlke Engineering AG. This project is not affiliated with, endorsed by, or
+sponsored by National Instruments, Emerson, or Zuehlke Engineering.
+
+LabVIEW must be installed and running for the lvai_* tools to work. The
+mutating tools overwrite VI files; work on copies and keep the project under
+version control.

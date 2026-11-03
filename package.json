@@ -1,0 +1,54 @@
+{
+  "name": "opencode-labview-mcp",
+  "version": "0.1.0",
+  "description": "Install and manage the Zuehlke LabVIEW MCP server for OpenCode on Windows.",
+  "type": "module",
+  "bin": {
+    "opencode-labview-mcp": "bin/cli.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "agents",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "license": "MIT",
+  "author": "SeveNOlogy7",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SeveNOlogy7/opencode-labview-mcp.git"
+  },
+  "homepage": "https://github.com/SeveNOlogy7/opencode-labview-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/SeveNOlogy7/opencode-labview-mcp/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "opencode",
+    "labview",
+    "mcp",
+    "installer",
+    "zuehlke"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "pack:check": "npm pack --dry-run"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.16",
+    "jsonc-parser": "^3.3.1"
+  }
+}
