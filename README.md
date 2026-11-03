@@ -208,33 +208,38 @@ They do not need LabVIEW, OpenCode or network access.
 ## Releasing
 
 Publishing uses npm [trusted publishing](https://docs.npmjs.com/trusted-publishers)
-(OIDC), so there is no long-lived `NPM_TOKEN` in the repository. npm cannot
-perform a package's very first publish through OIDC, so bootstrap once:
+(OIDC) and [staged publishing](https://docs.npmjs.com/staged-publishing), so
+there is no long-lived `NPM_TOKEN` and no version goes live without a human.
 
-1. **First publish, manually.** From a checkout, run
-
-   ```powershell
-   npm publish --auth-type=web
-   ```
-
-   and approve the 2FA prompt in the browser.
-
-2. **Register the trusted publisher.** On npmjs.com open the package →
-   *Settings* → *Trusted Publisher* → *GitHub Actions* and enter:
+1. **Trusted publisher.** On npmjs.com open the package → *Settings* →
+   *Trusted Publisher* → *GitHub Actions* and enter:
 
    | Field | Value |
    | --- | --- |
    | Organization or user | `SeveNOlogy7` |
    | Repository | `opencode-labview-mcp` |
    | Workflow filename | `publish.yml` |
-   | Allowed actions | `npm publish` |
+   | Allowed actions | leave `npm publish` **unchecked** (staged only) |
 
-3. **Release through Actions.** Bump `version` in `package.json`, commit, then
+   Leaving `npm publish` unchecked means the workflow can only stage a version;
+   a maintainer must approve it with 2FA. The first successful staged publish
+   must happen within two days of creating the configuration, otherwise it
+   expires and has to be recreated.
+
+2. **Release.** Bump `version` in `package.json`, commit, then
    `git tag v0.1.1` and `git push origin main --tags`. The workflow runs
-   `npm ci`, `npm test`, checks that the tag equals `v<version>`, and publishes
-   with provenance. The first successful OIDC publish must happen within two
-   days of creating the trusted publisher, otherwise the configuration expires
-   and has to be recreated.
+   `npm ci`, `npm test`, checks that the tag equals `v<version>`, and stages
+   the package with provenance.
+
+3. **Approve.** A maintainer reviews and approves the staged version:
+
+   ```powershell
+   npm stage list
+   npm stage approve <stage-id>
+   ```
+
+   or uses the *Staged Packages* tab on npmjs.com. Approval requires 2FA and
+   is the point where the version becomes public.
 
 ## License
 

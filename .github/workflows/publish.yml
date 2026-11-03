@@ -49,6 +49,7 @@ jobs:
           fi
 
       # No NODE_AUTH_TOKEN: npm exchanges the GitHub OIDC token for a
-      # short-lived publish credential (trusted publishing).
-      - name: Publish
-        run: npm publish --access public --provenance
+      # short-lived credential (trusted publishing). Staged publishing means a
+      # maintainer still has to approve the version with 2FA before it goes live.
+      - name: Stage publish
+        run: npm stage publish --access public --provenance
