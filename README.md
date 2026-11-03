@@ -207,16 +207,34 @@ They do not need LabVIEW, OpenCode or network access.
 
 ## Releasing
 
-1. Bump `version` in `package.json`.
-2. Commit, then `git tag v0.1.0` and `git push origin main --tags`.
-3. `.github/workflows/publish.yml` runs `npm ci`, `npm test`, checks that the
-   tag equals `v<version>`, and publishes with `--provenance`.
+Publishing uses npm [trusted publishing](https://docs.npmjs.com/trusted-publishers)
+(OIDC), so there is no long-lived `NPM_TOKEN` in the repository. npm cannot
+perform a package's very first publish through OIDC, so bootstrap once:
 
-The workflow needs an `NPM_TOKEN` repository secret: a granular access token
-with read/write permission for the `opencode-labview-mcp` package. Once the
-package exists, you can replace the token with npm trusted publishing (OIDC)
-by adding this repository and workflow under the package's settings on
-npmjs.com, then deleting the secret.
+1. **First publish, manually.** From a checkout, run
+
+   ```powershell
+   npm publish --auth-type=web
+   ```
+
+   and approve the 2FA prompt in the browser.
+
+2. **Register the trusted publisher.** On npmjs.com open the package →
+   *Settings* → *Trusted Publisher* → *GitHub Actions* and enter:
+
+   | Field | Value |
+   | --- | --- |
+   | Organization or user | `SeveNOlogy7` |
+   | Repository | `opencode-labview-mcp` |
+   | Workflow filename | `publish.yml` |
+   | Allowed actions | `npm publish` |
+
+3. **Release through Actions.** Bump `version` in `package.json`, commit, then
+   `git tag v0.1.1` and `git push origin main --tags`. The workflow runs
+   `npm ci`, `npm test`, checks that the tag equals `v<version>`, and publishes
+   with provenance. The first successful OIDC publish must happen within two
+   days of creating the trusted publisher, otherwise the configuration expires
+   and has to be recreated.
 
 ## License
 
