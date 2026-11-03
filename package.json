@@ -1,6 +1,6 @@
 {
   "name": "opencode-labview-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Install and manage the Zuehlke LabVIEW MCP server for OpenCode on Windows.",
   "type": "module",
   "bin": {
