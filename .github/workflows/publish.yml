@@ -17,7 +17,8 @@ permissions:
 
 jobs:
   publish:
-    runs-on: ubuntu-latest
+    # The package declares os=win32, so npm ci refuses to run on Linux.
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
 
